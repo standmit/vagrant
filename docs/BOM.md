@@ -1,3 +1,4 @@
+# BOM [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3.0-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0) 
 | Component                      | Count | Link |
 | ------------------------------ | ----- | ---- |
 | Base                           | 1     | [link](https://www.aliexpress.com/item/Official-smarian-silvr-Metal-Panel-Frame-Bracket-for-Robot-Tank-Car-Chassis-Caterpillar-Crawler-DIY/32803123039.html) |
