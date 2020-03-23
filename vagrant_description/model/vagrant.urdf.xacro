@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright 2019 Andrey Stepanov (standmit)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<robot name="vagrant" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find urdf_juggle)/inertials.urdf.xacro" />
+    
+    <link name="base_link" />
+    
+    <link name="body">
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find vagrant_description)/model/base.dae" />
+            </geometry>
+            <origin rpy="0.0 0.0 1.571" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.21 0.22 0.127" />
+            </geometry>
+            <origin xyz="0.002 0.0 0.064" />
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.004 0.11 0.03" />
+            </geometry>
+            <origin xyz="0.102 0.0 -0.014" />
+        </collision>
+        <inertial>
+            <xacro:box_inertia mass="2.0" size="0.21 0.22 0.127" />
+            <origin xyz="0.002 0.0 0.064" />
+        </inertial>
+    </link>
+    
+    <joint name="base_to_body" type="fixed">
+        <parent link="base_link" />
+        <child link="body" />
+    </joint>
+    
+    <xacro:include filename="$(find vagrant_description)/model/motor.urdf.xacro" />
+    
+    <xacro:macro name="robot_motor" params="name x y yaw">
+       
+        <xacro:wheel_motor name="${name}" />
+       
+        <joint name="body_to_${name}" type="fixed">
+            <parent link="body" />
+            <child link="${stator_name}" />
+            <origin xyz="${x} ${y} -0.022" rpy="0.0 0.0 ${yaw}" />
+        </joint>
+        
+    </xacro:macro>
+    
+    <xacro:robot_motor name="left_front_motor" x="0.0635" y="0.095" yaw="1.571" />
+    <xacro:robot_motor name="right_front_motor" x="0.0635" y="-0.095" yaw="-1.571" />
+    <xacro:robot_motor name="left_back_motor" x="-0.0655" y="0.095" yaw="1.571" />
+    <xacro:robot_motor name="right_back_motor" x="-0.0655" y="-0.095" yaw="-1.571" />
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>$(arg robot_namespace)</robotNamespace>
+            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+            <legacyModeNS>true</legacyModeNS>
+        </plugin>
+    </gazebo>
+	
+</robot>

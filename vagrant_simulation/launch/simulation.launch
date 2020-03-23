@@ -1,0 +1,31 @@
+<!--
+Copyright 2019 Andrey Stepanov (standmit)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<launch>
+    <arg name="robot_ns" default="vagrant" />
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+    
+    <group ns="$(arg robot_ns)">
+        <include file="$(find vagrant_description)/launch/vagrant.launch">
+            <arg name="robot_ns" value="$(arg robot_ns)" /> 
+        </include>
+    
+        <node name="spawner" pkg="gazebo_ros" type="spawn_model" args="-z 0.2 -unpause -urdf -model vagrant -param robot_description" output="screen" />
+    </group>
+    
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find vagrant_simulation)/rviz/view.rviz" required="true" />
+</launch>

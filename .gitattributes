@@ -1,2 +1,4 @@
 *.STEP binary
 *.stp binary
+*.dae binary
+*.rviz binary

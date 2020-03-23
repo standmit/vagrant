@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright 2019 Andrey Stepanov (standmit)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="motor">
+
+    <xacro:include filename="$(find urdf_juggle)/inertials.urdf.xacro" />
+    
+    <xacro:macro name="wheel_motor" params="name">
+	
+        <xacro:property name="stator_name" value="${name}_stator" scope="global"/>
+        <xacro:property name="rotor_name" value="${name}_rotor" />
+        <xacro:property name="joint_name" value="${name}_joint_stator_to_rotor" />
+    
+    	<link name="${stator_name}">
+    		<visual>
+    			<geometry>
+    				<mesh filename="file://$(find vagrant_description)/model/wheel_motor_stator/wheel_motor_stator.dae" />
+    			</geometry>
+    			<origin xyz="-0.0205 0 0" />
+    		</visual>
+    		<collision>
+    			<geometry>
+    				<box size="0.0645 0.026 0.024" />
+    			</geometry>
+    			<origin xyz="-0.0535 0.0005 0" />
+    		</collision>
+    		<collision>
+    			<geometry>
+    				<box size="0.033 0.026 0.01" />
+    			</geometry>
+    			<origin xyz="-0.037 0 0.017"/>
+    		</collision>
+    		<inertial>
+    			<origin xyz="-0.048 0 0.003" />
+    			<xacro:box_inertia mass="0.1" size="0.064 0.024 0.03" />
+    		</inertial>
+    	</link>
+    	
+    	<joint name="${joint_name}" type="continuous">
+    		<parent link="${stator_name}" />
+    		<child link="${rotor_name}" />
+            <dynamics friction="0.024" />
+    	</joint>
+    
+    	<link name="${rotor_name}">
+    		<visual>
+    			<geometry>
+    				<mesh filename="file://$(find vagrant_description)/model/wheel_motor_rotor/wheel_motor_rotor.dae" />
+    			</geometry>
+    		</visual>
+    		<collision>
+    			<geometry>
+    				<cylinder radius="0.0337" length="0.025" />
+    			</geometry>
+    			<origin xyz="-0.0002 0 0" rpy="0 1.571 0" />
+    		</collision>
+    		<collision>
+    			<geometry>
+    				<cylinder radius="0.0055" length="0.0072" />
+    			</geometry>
+    			<origin xyz="-0.0165 0 0" rpy="0 1.571 0" />
+    		</collision>
+    		<inertial>
+    			<xacro:cylinder_inertia mass="0.05" radius="0.032" length="0.028" />
+    			<origin rpy="0 1.571 0" />
+    		</inertial>
+    	</link>
+        
+        <gazebo reference="${rotor_name}">
+            <mu1>0.8</mu1>
+            <mu2>0.8</mu2>
+            <kd>0.2</kd>
+        </gazebo>
+        
+    	<transmission name="${name}_rotor_transmission">
+    		<type>transmission_interface/SimpleTransmission</type>
+    		<joint name="${joint_name}">
+    			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    		</joint>
+    		<actuator name="${name}_motor">
+    			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    			<mechanicalReduction>171</mechanicalReduction>
+    		</actuator>
+    	</transmission>
+    
+    </xacro:macro>
+
+</robot>

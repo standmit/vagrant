@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>vagrant</name>
+  <version>0.1.0</version>
+  <description>Vagrant Bot package</description>
+
+  <maintainer email="standmit@zabstrannik.ru">Andrey Stepanov (standmit)</maintainer>
+
+  <license>GPLv3</license>
+
+  <author email="standmit@zabstrannik.ru">Andrey Stepanov (standmit)</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>vagrant_description</exec_depend>
+  <exec_depend>vagrant_simulation</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>
