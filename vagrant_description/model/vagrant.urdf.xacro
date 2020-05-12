@@ -55,15 +55,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     <xacro:include filename="$(find vagrant_description)/model/motor.urdf.xacro" />
     
     <xacro:macro name="robot_motor" params="name x y yaw">
-       
-        <xacro:wheel_motor name="${name}" />
-       
-        <joint name="body_to_${name}" type="fixed">
-            <parent link="body" />
-            <child link="${stator_name}" />
-            <origin xyz="${x} ${y} -0.022" rpy="0.0 0.0 ${yaw}" />
-        </joint>
-        
+        <xacro:wheel_motor name="${name}" base="base_link" xyz="${x} ${y} -0.022" rpy="0.0 0.0 ${yaw}" />        
     </xacro:macro>
     
     <xacro:robot_motor name="left_front_motor" x="0.0635" y="0.095" yaw="1.571" />

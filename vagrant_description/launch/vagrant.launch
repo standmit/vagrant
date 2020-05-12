@@ -16,15 +16,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 <launch>
     <arg name="robot_ns" default="/vagrant" />
-    
+
     <param name="robot_description" command="xacro --xacro-ns '$(find vagrant_description)/model/vagrant.urdf.xacro' robot_namespace:=$(arg robot_ns)" />
-    
+
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" required="true" />
 
     <arg name="joint_state_controller" value="joint_state_controller" />
-    <rosparam param="$(arg joint_state_controller)">
-        type: joint_state_controller/JointStateController
-        publish_rate: 10
-    </rosparam>
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="--timeout=120 $(arg joint_state_controller)" />
+    <rosparam param="$(arg joint_state_controller)" command="load" file="$(find vagrant_description)/controllers/joint_state_controller.yaml" />
+    <arg name="diff_drive_controller" value="diff_drive_controller" />
+    <rosparam param="$(arg diff_drive_controller)" command="load" file="$(find vagrant_description)/controllers/diff_drive_controller.yaml" />
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="--timeout=120 $(arg joint_state_controller) $(arg diff_drive_controller)" />
 </launch>
