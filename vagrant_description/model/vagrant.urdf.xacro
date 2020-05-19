@@ -43,7 +43,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
         </collision>
         <inertial>
             <xacro:box_inertia mass="2.0" size="0.21 0.22 0.127" />
-            <origin xyz="0.002 0.0 0.064" />
+            <origin xyz="-0.002 0.0 0.064" />
         </inertial>
     </link>
     
